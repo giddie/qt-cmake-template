@@ -1,0 +1,19 @@
+<%- Dir.glob(target_directory + '/*/').each do |directory| %>
+add_subdirectory(<%= directory.gsub(target_directory + '/', '').chop %>)
+<%- end %>
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}
+                    ${CMAKE_CURRENT_BINARY_DIR})
+
+file(GLOB UI_FILES *.ui)
+file(GLOB CODE_FILES *.cpp)
+
+qt4_wrap_ui(UI_HEADERS ${UI_FILES})
+qt4_automoc(${CODE_FILES})
+
+<% unless library == false %>
+add_library(<%= directory_library_name(target_directory) %> STATIC
+  ${UI_FILES}
+  ${CODE_FILES}
+)
+<% end %>
