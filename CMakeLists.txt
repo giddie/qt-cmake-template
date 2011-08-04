@@ -16,8 +16,8 @@
 
 cmake_minimum_required(VERSION 2.8.3)
 project(example)
-set(APP_LONGNAME "Example")
-set(APP_VERSION "0.1")
+set(PROJECT_LONGNAME "Example")
+set(PROJECT_VERSION "0.1")
 
 # If no build type is specified, default to "Release"
 if (NOT CMAKE_BUILD_TYPE)
