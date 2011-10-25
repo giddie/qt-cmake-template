@@ -1,5 +1,5 @@
 <%- Dir.glob(target_directory + '/*/').each do |directory| %>
-add_subdirectory(<%= directory.gsub(target_directory + '/', '').chop %>)
+add_subdirectory(<%= directory[(target_directory.length + 1)..-2] %>)
 <%- end %>
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}

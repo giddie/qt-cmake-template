@@ -75,7 +75,7 @@ class PrepareBuild
   end
 
   def self.relative_path(path)
-    path.gsub((SOURCE_DIR + '/'), '')
+    path[(SOURCE_DIR.length + 1)..-1]
   end
 
   def self.run

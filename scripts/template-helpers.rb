@@ -16,7 +16,7 @@
 
 module HelperMethods
   def directory_library_name(directory)
-    directory.gsub(SOURCE_DIR + '/', '').gsub('/', '-')
+    directory[(SOURCE_DIR.length + 1)..-1].gsub('/', '-')
   end
 
   def target_directory

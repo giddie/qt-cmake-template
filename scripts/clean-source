@@ -34,7 +34,7 @@ if files_to_clean.empty?
 else
   puts 'Cleaning generated files:'
   files_to_clean.each do |path|
-    puts "  #{path.gsub((SOURCE_DIR + '/'), '')}"
+    puts "  #{path[(SOURCE_DIR.length + 1)..-1]}"
     File.delete(path)
   end
 end
