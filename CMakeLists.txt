@@ -31,13 +31,18 @@ include(${QT_USE_FILE})
 # Qt doesn't use exceptions, but remove this if you do.
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
 
-# Support scripts need to generate CMakeLists files before we can continue
+# Testing configuration
+enable_testing()
+set(TEST_LINK_LIBRARIES ${QT_LIBRARIES})
+
+# The support scripts need to generate CMakeLists files before we can continue
 find_package(Ruby REQUIRED)
 set (SCRIPTS_DIR ${CMAKE_SOURCE_DIR}/scripts)
 execute_process(COMMAND ${RUBY_EXECUTABLE} ${SCRIPTS_DIR}/prepare-build
                 RESULT_VARIABLE SCRIPT_RESULT)
 if (SCRIPT_RESULT)
-  message (FATAL_ERROR "Failed to run build-preparation script")
+  message (FATAL_ERROR "Failed to run build-preparation script.")
 endif (SCRIPT_RESULT)
 
 add_subdirectory(source)
+add_subdirectory(tests)

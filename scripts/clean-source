@@ -16,25 +16,29 @@
 ###
 
 SCRIPT_DIR = File.dirname(__FILE__)
-SOURCE_DIR = SCRIPT_DIR + '/../source'
+BASE_DIR = SCRIPT_DIR + '/..'
+SOURCE_DIR = BASE_DIR + '/source'
+TESTS_DIR = BASE_DIR + '/tests'
 
 files_to_clean = Array.new
 
-files_to_clean += Dir.glob(SOURCE_DIR + '/**/*.erb').map {|template_path|
-                    generated_basename = File.basename(template_path)[0..-5]
-                    File.dirname(template_path) + '/' + generated_basename
-                  }.select {|path| File.exist?(path) }
-files_to_clean += Dir.glob(SOURCE_DIR + '/**/*').select {|path|
-                    File.directory?(path)
-                  }.map {|path| path + '/CMakeLists.txt'}.
-                  select {|path| File.exist?(path) }
+[SOURCE_DIR, TESTS_DIR].each do |directory|
+  files_to_clean += Dir.glob(directory + '/**/*.erb').map {|template_path|
+                      generated_basename = File.basename(template_path)[0..-5]
+                      File.dirname(template_path) + '/' + generated_basename
+                    }.select {|path| File.exist?(path) }
+  files_to_clean += Dir.glob(directory + '/**/*').select {|path|
+                      File.directory?(path)
+                    }.map {|path| path + '/CMakeLists.txt'}.
+                    select {|path| File.exist?(path) }
+end
 
 if files_to_clean.empty?
   puts 'Generated files have already been cleaned.'
 else
   puts 'Cleaning generated files:'
   files_to_clean.each do |path|
-    puts "  #{path[(SOURCE_DIR.length + 1)..-1]}"
+    puts "  #{path[(BASE_DIR.length + 1)..-1]}"
     File.delete(path)
   end
 end

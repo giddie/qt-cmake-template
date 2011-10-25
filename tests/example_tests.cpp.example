@@ -1,0 +1,26 @@
+/**
+ * Copyright (c) 2011, Yotta DCL
+ * All rights reserved.
+ */
+
+#include <QtTest/QtTest>
+#include "defines.h"
+
+class ExampleTests : public QObject
+{
+  Q_OBJECT
+
+  private slots:
+    void exampleOne();
+};
+
+/**
+ * Example test
+ */
+void ExampleTests::exampleOne()
+{
+  QVERIFY(1 == 1);
+}
+
+QTEST_MAIN(ExampleTests)
+#include "example_tests.moc"
