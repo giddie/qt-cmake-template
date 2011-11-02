@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 #include "main_window.h"
-#include "main_window.moc"
+#include "moc_main_window.cpp"
 
 /**
  * Constructor

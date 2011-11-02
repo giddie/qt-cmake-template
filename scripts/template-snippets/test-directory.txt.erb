@@ -3,8 +3,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 
 <%- Dir.glob(target_directory + '/*_tests.cpp').each do |test_file| %>
 <%- basename = test_file[0..-5].gsub(target_directory + '/', '') %>
-qt4_generate_moc(<%= basename + '.cpp' %> <%= basename + '.moc' %>)
-add_executable(<%= basename %> <%= basename + '.cpp' %> <%= basename + '.moc' %>)
+add_executable(<%= basename %> <%= basename + '.cpp' %>)
 target_link_libraries(<%= basename %> ${TEST_LINK_LIBRARIES} QtTest)
 add_test(<%= basename %> <%= basename %>)
 

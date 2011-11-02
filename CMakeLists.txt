@@ -14,7 +14,7 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ###
 
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 2.8.6)
 project(example)
 set(PROJECT_LONGNAME "Example")
 set(PROJECT_VERSION "0.1")
@@ -27,6 +27,7 @@ endif (NOT CMAKE_BUILD_TYPE)
 # Configure Qt
 find_package(Qt4 REQUIRED QtCore QtGui)
 include(${QT_USE_FILE})
+set (CMAKE_AUTOMOC true)
 
 # Qt doesn't use exceptions, but remove this if you do.
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")

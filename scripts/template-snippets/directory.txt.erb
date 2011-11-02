@@ -9,7 +9,6 @@ file(GLOB UI_FILES *.ui)
 file(GLOB CODE_FILES *.cpp)
 
 qt4_wrap_ui(UI_HEADERS ${UI_FILES})
-qt4_automoc(${CODE_FILES})
 
 <% unless library == false %>
 add_library(<%= directory_library_name(target_directory) %> STATIC
