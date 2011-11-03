@@ -21,16 +21,18 @@ set(PROJECT_VERSION "0.1")
 
 # If no build type is specified, default to "Release"
 if (NOT CMAKE_BUILD_TYPE)
-  set (CMAKE_BUILD_TYPE Release)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "None Debug Release RelWithDebInfo MinSizeRel"
+      FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 # Configure Qt
 find_package(Qt4 REQUIRED QtCore QtGui)
 include(${QT_USE_FILE})
-set (CMAKE_AUTOMOC true)
+set(CMAKE_AUTOMOC true)
 
 # Qt doesn't use exceptions, but remove this if you do.
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
 
 # Testing configuration
 enable_testing()
@@ -38,7 +40,7 @@ set(TEST_LINK_LIBRARIES ${QT_LIBRARIES})
 
 # The support scripts need to generate CMakeLists files before we can continue
 find_package(Ruby REQUIRED)
-set (SCRIPTS_DIR ${CMAKE_SOURCE_DIR}/scripts)
+set(SCRIPTS_DIR ${CMAKE_SOURCE_DIR}/scripts)
 execute_process(COMMAND ${RUBY_EXECUTABLE} ${SCRIPTS_DIR}/prepare-build
                 RESULT_VARIABLE SCRIPT_RESULT)
 if (SCRIPT_RESULT)
