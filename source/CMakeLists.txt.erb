@@ -25,9 +25,16 @@ add_executable(${CMAKE_PROJECT_NAME} WIN32
   ${CODE_FILES}
   ${RESOURCE_FILES}
 )
+<% subdirectories = Dir.glob(target_directory + '/**/*/') %>
 target_link_libraries(${CMAKE_PROJECT_NAME}
   ${QT_LIBRARIES}
-  <%- Dir.glob(target_directory + '/**/*/') do |directory| %>
-    <%= directory_library_name(directory.chop) %>
-  <%- end %>
+  <% unless subdirectories.empty? %>
+    -Wl,--whole-archive
+    <%- subdirectories.each do |directory| %>
+      <%= directory_library_name(directory.chop) %>
+    <%- end %>
+    -Wl,--no-whole-archive
+  <% end %>
 )
+target_link_libraries(${CMAKE_PROJECT_NAME} LINK_INTERFACE_LIBRARIES
+                      ${QT_LIBRARIES})

@@ -11,8 +11,13 @@ file(GLOB CODE_FILES *.cpp)
 qt4_wrap_ui(UI_HEADERS ${UI_FILES})
 
 <% unless library == false %>
-add_library(<%= directory_library_name(target_directory) %> STATIC
+<% library_name = directory_library_name(target_directory) %>
+add_library(<%= library_name %> STATIC
   ${UI_FILES}
   ${CODE_FILES}
 )
+if (NOT WIN32)
+  set_target_properties(<%= library_name %> PROPERTIES
+                        COMPILE_FLAGS -fPIC)
+endif (NOT WIN32)
 <% end %>
