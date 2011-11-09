@@ -3,5 +3,10 @@
  * All rights reserved.
  */
 
- // Define constants here that will be useful in your tests (e.g. fixture
- // directories).
+#ifndef TESTS_DEFINES_H
+#define TESTS_DEFINES_H
+
+// Define constants here that will be useful in your tests (e.g. fixture
+// directories).
+
+#endif
