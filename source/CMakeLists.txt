@@ -17,7 +17,13 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/defines.h.cmake
                ${CMAKE_CURRENT_BINARY_DIR}/defines.h)
 
-<%= snippet 'directory', :library => false -%>
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+file(GLOB_RECURSE UI_FILES *.ui)
+file(GLOB_RECURSE CODE_FILES *.cpp)
+
+qt4_wrap_ui(UI_HEADERS ${UI_FILES})
+
 qt4_add_resources(RESOURCE_FILES ../resources/resources.qrc)
 
 add_executable(${CMAKE_PROJECT_NAME} WIN32
@@ -25,16 +31,6 @@ add_executable(${CMAKE_PROJECT_NAME} WIN32
   ${CODE_FILES}
   ${RESOURCE_FILES}
 )
-<% subdirectories = Dir.glob(target_directory + '/**/*/') %>
 target_link_libraries(${CMAKE_PROJECT_NAME}
-  <% unless subdirectories.empty? %>
-    -Wl,--whole-archive
-    <%- subdirectories.each do |directory| %>
-      <%= directory_library_name(directory.chop) %>
-    <%- end %>
-    -Wl,--no-whole-archive
-  <% end %>
   ${QT_LIBRARIES}
 )
-target_link_libraries(${CMAKE_PROJECT_NAME} LINK_INTERFACE_LIBRARIES
-                      ${QT_LIBRARIES})

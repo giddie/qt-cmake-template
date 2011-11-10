@@ -1,5 +1,4 @@
 .DS_Store
 *.swp
 *.swo
-CMakeLists.txt
 /build
