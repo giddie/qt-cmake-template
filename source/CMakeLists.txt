@@ -26,10 +26,20 @@ qt4_wrap_ui(UI_HEADERS ${UI_FILES})
 
 qt4_add_resources(RESOURCE_FILES ../resources/resources.qrc)
 
+# Windows application icon
+if (WIN32)
+  set(WINDOWS_RESFILE ${CMAKE_CURRENT_BINARY_DIR}/resources.obj)
+  add_custom_command(OUTPUT ${WINDOWS_RESFILE}
+    COMMAND windres.exe resources.rc ${WINDOWS_RESFILE}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/win
+  )
+endif (WIN32)
+
 add_executable(${CMAKE_PROJECT_NAME} WIN32
   ${UI_HEADERS}
   ${CODE_FILES}
   ${RESOURCE_FILES}
+  ${WINDOWS_RESFILE}
 )
 target_link_libraries(${CMAKE_PROJECT_NAME}
   ${QT_LIBRARIES}

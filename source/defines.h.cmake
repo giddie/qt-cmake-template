@@ -17,7 +17,12 @@
 #ifndef GLOBAL_DEFINES_H
 #define GLOBAL_DEFINES_H
 
-const char* PROJECT_NAME = "@PROJECT_LONGNAME@"
-const char* PROJECT_VERSION = "@PROJECT_VERSION@"
+// An anonymous namespace restricts these variables to the scope of the
+// compilation unit.
+namespace {
+  const char* PROJECT_NAME = "@PROJECT_LONGNAME@"
+  const char* PROJECT_VERSION = "@PROJECT_VERSION@"
+}
 
 #endif
+// vim: ft=cpp
