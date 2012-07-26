@@ -46,7 +46,7 @@ Var StartMenuFolder
 !define MUI_ABORTWARNING
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "${SOURCE_DIR}\Licence.txt"
+!insertmacro MUI_PAGE_LICENSE "${SOURCE_DIR}\LICENCE"
 !insertmacro MUI_PAGE_DIRECTORY
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "${APP_LONGNAME}"
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
@@ -72,7 +72,7 @@ Var StartMenuFolder
 Section Install
   SetOutPath "$INSTDIR"
 
-  File "${SOURCE_DIR}\Licence.txt"
+  File "${SOURCE_DIR}\LICENCE"
 
   # App files
   File "/oname=${EXE_INSTALL_NAME}" "${BUILD_DIR}\source\${EXE_BUILD_NAME}"
@@ -114,7 +114,7 @@ SectionEnd
 # Uninstallation
 #==
 Section Uninstall
-  Delete "$INSTDIR\Licence.txt"
+  Delete "$INSTDIR\LICENCE"
 
   # App files
   Delete "$INSTDIR\${EXE_INSTALL_NAME}"
