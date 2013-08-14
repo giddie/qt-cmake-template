@@ -14,40 +14,40 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ###
 
-cmake_minimum_required(VERSION 2.8.6)
+cmake_minimum_required(VERSION 2.8.11)
 project(example)
 set(PROJECT_LONGNAME "Example")
 set(PROJECT_VERSION "0.1")
+
+# Global CMake options
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
 
 # If no build type is specified, default to "Release"
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING
       "None Debug Release RelWithDebInfo MinSizeRel"
       FORCE)
-endif (NOT CMAKE_BUILD_TYPE)
+endif()
 
 # Configure Qt
-find_package(Qt4 REQUIRED QtCore QtGui)
-include(${QT_USE_FILE})
-set(CMAKE_AUTOMOC true)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Test REQUIRED)
 
 # Qt doesn't use exceptions, but remove this if you do.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
 
 if (WIN32)
-  # Stock Qt is built using the C++03 standard. To avoid potential breakage,
-  # let's make this explicit.
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++03")
   # Since Qt doesn't use shared libstdc++, let's avoid it too.
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++")
   # Windows installer
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/win/installer.nsi.cmake
                  ${CMAKE_CURRENT_BINARY_DIR}/installer.nsi @ONLY)
-endif (WIN32)
+endif()
 
 # Testing configuration
 enable_testing()
-set(TEST_LINK_LIBRARIES ${QT_LIBRARIES})
+set(TEST_LINK_LIBRARIES Qt5::Test)
 
 add_subdirectory(source)
 add_subdirectory(tests)

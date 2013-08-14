@@ -39,9 +39,7 @@ function(test_directory)
     get_filename_component(TEST_TARGET ${TEST_FILE} NAME_WE)
 
     add_executable(${TEST_TARGET} ${TEST_FILE})
-    target_link_libraries(${TEST_TARGET}
-                          ${TEST_LINK_LIBRARIES}
-                          ${QT_QTTEST_LIBRARY})
+    target_link_libraries(${TEST_TARGET} ${TEST_LINK_LIBRARIES})
     add_test(${TEST_NAME} ${TEST_TARGET})
   endforeach(TEST_FILE)
 
@@ -52,8 +50,8 @@ function(test_directory)
     if (IS_DIRECTORY ${SUBDIRECTORY})
       if (EXISTS ${SUBDIRECTORY}/CMakeLists.txt)
         add_subdirectory(${SUBDIRECTORY})
-      endif (EXISTS ${SUBDIRECTORY}/CMakeLists.txt)
-    endif (IS_DIRECTORY ${SUBDIRECTORY})
+      endif()
+    endif()
   endforeach(SUBDIRECTORY)
 endfunction(test_directory)
 

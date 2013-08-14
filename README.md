@@ -53,8 +53,6 @@ Dependencies
 ### The Qt Libraries
 http://qt-project.org/downloads
 
-The full SDK is not required.
-
 ### CMake
 http://www.cmake.org/cmake/resources/software.html
 

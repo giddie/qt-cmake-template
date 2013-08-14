@@ -17,15 +17,11 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/defines.h.cmake
                ${CMAKE_CURRENT_BINARY_DIR}/defines.h)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-                    ${CMAKE_CURRENT_BINARY_DIR})
-
 file(GLOB_RECURSE UI_FILES *.ui)
 file(GLOB_RECURSE CODE_FILES *.cpp)
 
-qt4_wrap_ui(UI_HEADERS ${UI_FILES})
-
-qt4_add_resources(RESOURCE_FILES ../resources/resources.qrc)
+qt5_wrap_ui(UI_HEADERS ${UI_FILES})
+qt5_add_resources(RESOURCE_FILES ../resources/resources.qrc)
 
 # Windows application icon
 if (WIN32)
@@ -34,7 +30,7 @@ if (WIN32)
     COMMAND windres.exe resources.rc ${WINDOWS_RESFILE}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/win
   )
-endif (WIN32)
+endif()
 
 add_executable(${CMAKE_PROJECT_NAME} WIN32
   ${UI_HEADERS}
@@ -43,5 +39,5 @@ add_executable(${CMAKE_PROJECT_NAME} WIN32
   ${WINDOWS_RESFILE}
 )
 target_link_libraries(${CMAKE_PROJECT_NAME}
-  ${QT_LIBRARIES}
+  Qt5::Widgets
 )
