@@ -38,9 +38,8 @@ find_package(Qt5Test REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
 
 if (WIN32)
-  # Since Qt doesn't use shared libstdc++, let's avoid it too.
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++")
   # Windows installer
+  get_target_property(QT_LIBRARY_DIR Qt5::Core LOCATION)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/win/installer.nsi.cmake
                  ${CMAKE_CURRENT_BINARY_DIR}/installer.nsi @ONLY)
 endif()

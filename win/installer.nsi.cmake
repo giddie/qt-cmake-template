@@ -24,8 +24,8 @@
 !define SOURCE_DIR "@CMAKE_SOURCE_DIR@"
 !define BUILD_DIR "@CMAKE_BINARY_DIR@"
 !define MINGW_BIN_DIR "@CMAKE_CXX_COMPILER@/.."
-!define QT_DLL_DIR "@QT_LIBRARY_DIR@/../bin"
-!define QT_PLUGINS_DIR "@QT_PLUGINS_DIR@"
+!define QT_DLL_DIR "@QT_LIBRARY_DIR@/.."
+!define QT_PLUGINS_DIR "@QT_LIBRARY_DIR@/../../plugins"
 
 Name "${APP_LONGNAME}"
 OutFile "${APP_LONGNAME}-${APP_VERSION} Setup.exe"
@@ -78,18 +78,27 @@ Section Install
   File "/oname=${EXE_INSTALL_NAME}" "${BUILD_DIR}\source\${EXE_BUILD_NAME}"
 
   # MinGW Runtimes
-  File "${MINGW_BIN_DIR}\mingwm10.dll"
   File "${MINGW_BIN_DIR}\libgcc_s_dw2-1.dll"
+  File "${MINGW_BIN_DIR}\libstdc++-6.dll"
+  File "${MINGW_BIN_DIR}\libwinpthread-1.dll"
+
+  ; ICU Unicode Libraries used by Qt
+  File "${QT_DLL_DIR}\icudt51.dll"
+  File "${QT_DLL_DIR}\icuin51.dll"
+  File "${QT_DLL_DIR}\icuuc51.dll"
 
   # Qt Libraries
   File "${SOURCE_DIR}\win\qt.conf"
-  File "${QT_DLL_DIR}\QtCore4.dll"
-  File "${QT_DLL_DIR}\QtGui4.dll"
+  File "${QT_DLL_DIR}\Qt5Core.dll"
+  File "${QT_DLL_DIR}\Qt5Gui.dll"
+  File "${QT_DLL_DIR}\Qt5Widgets.dll"
 
   # Qt Plugins
+  SetOutPath "$INSTDIR\plugins\platforms"
+  File "${QT_PLUGINS_DIR}\platforms\qwindows.dll"
   #SetOutPath "$INSTDIR\plugins\imageformats"
-  #File "${QT_PLUGINS_DIR}\imageformats\qgif4.dll"
-  #File "${QT_PLUGINS_DIR}\imageformats\qjpeg4.dll"
+  #File "${QT_PLUGINS_DIR}\imageformats\qgif.dll"
+  #File "${QT_PLUGINS_DIR}\imageformats\qjpeg.dll"
 
   # Uninstaller
   WriteRegStr HKLM "${APP_REGISTRY_KEY}" "" $INSTDIR
@@ -120,19 +129,28 @@ Section Uninstall
   Delete "$INSTDIR\${EXE_INSTALL_NAME}"
 
   # MinGW Runtimes
-  Delete "$INSTDIR\mingwm10.dll"
   Delete "$INSTDIR\libgcc_s_dw2-1.dll"
+  Delete "$INSTDIR\libstdc++-6.dll"
+  Delete "$INSTDIR\libwinpthread-1.dll"
+
+  ; ICU Unicode Libraries used by Qt
+  Delete "$INSTDIR\icudt51.dll"
+  Delete "$INSTDIR\icuin51.dll"
+  Delete "$INSTDIR\icuuc51.dll"
 
   # Qt Libraries
   Delete "$INSTDIR\qt.conf"
-  Delete "$INSTDIR\QtCore4.dll"
-  Delete "$INSTDIR\QtGui4.dll"
+  Delete "$INSTDIR\Qt5Core.dll"
+  Delete "$INSTDIR\Qt5Gui.dll"
+  Delete "$INSTDIR\Qt5Widgets.dll"
 
-  # Qt Image Plugins
+  # Qt Plugins
+  Delete "$INSTDIR\plugins\platforms\qwindows.dll"
+  RMDir "$INSTDIR\plugins\platforms"
   #Delete "$INSTDIR\plugins\imageformats\qgif4.dll"
   #Delete "$INSTDIR\plugins\imageformats\qjpeg4.dll"
   #RMDir "$INSTDIR\plugins\imageformats"
-  #RMDir "$INSTDIR\plugins"
+  RMDir "$INSTDIR\plugins"
 
   # Menu folder
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder

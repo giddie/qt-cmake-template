@@ -53,24 +53,10 @@ Dependencies
 ### The Qt Libraries
 http://qt-project.org/downloads
 
+Qt bundles a version of MinGW, which we will use for compilation.
+
 ### CMake
 http://www.cmake.org/cmake/resources/software.html
-
-### MinGW
-http://mingw.org
-
-It's the `mingw-get-inst` installer that you want. There are other builds of
-MinGW around. For instance, [Nuwen's MinGW](http://nuwen.net/mingw.html) is nice
-and easy to install, but is configured for static linking of the GCC libraries.
-Since Qt uses the shared libraries from MinGW, you'll still need to distribute
-them, and your binaries will be larger than they need to be.
-
-Pay attention to the version of GCC that is shipped with the installation. If
-the project builds but crashes, try a version of GCC closer to that with which
-Qt was built, as it may be an ABI issue.
-
-Ensure you install the C++ compiler, and avoid installing MSYS unless you know
-you need it, as it will often just complicate things.
 
 ### NSIS
 http://nsis.sourceforge.net
@@ -78,11 +64,27 @@ http://nsis.sourceforge.net
 Building
 --------
 
-Create a `build` directory in the root, open a command-line window, and enter
-the following commands:
+### Using QtCreator
+
+* Open QtCreator
+* File -> Open File or Project
+* Open the top-level CMakeLists.txt file in the project folder.
+* Choose a build location
+* Click "Run CMake"
+* Click "Finish"
+* Click the Build button in the bottom-left-hand corner, shaped like a hammer.
+
+### Using the command-line
+
+* Ensure that the following are on the PATH:
+  * Cmake's cmake.exe
+  * Qt's qmake.exe
+  * GCC, from the MinGW bundled with Qt (gcc.exe)
+* Create a `build` directory in the source directory, open a command-line
+  window, and enter the following commands:
 
     cmake -G "MinGW Makefiles" ..
-    make -j <num-jobs>
+    mingw32-make -j <num-jobs>
 
 Where `<num-jobs>` is the number of jobs to run in parallel (usually the number
 of cores plus one).
