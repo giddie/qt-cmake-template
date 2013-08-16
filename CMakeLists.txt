@@ -34,9 +34,6 @@ endif()
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Test REQUIRED)
 
-# Qt doesn't use exceptions, but remove this if you do.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
-
 if (WIN32)
   # Windows installer
   get_target_property(QT_LIBRARY_DIR Qt5::Core LOCATION)
