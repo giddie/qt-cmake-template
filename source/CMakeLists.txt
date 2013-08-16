@@ -25,18 +25,25 @@ qt5_add_resources(RESOURCE_FILES ../resources/resources.qrc)
 
 # Windows application icon
 if (WIN32)
-  set(WINDOWS_RESFILE ${CMAKE_CURRENT_BINARY_DIR}/resources.obj)
-  add_custom_command(OUTPUT ${WINDOWS_RESFILE}
-    COMMAND windres.exe resources.rc ${WINDOWS_RESFILE}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/win
-  )
+  set(WINDOWS_RES_FILE ${CMAKE_CURRENT_BINARY_DIR}/resources.obj)
+  if (MSVC)
+    add_custom_command(OUTPUT ${WINDOWS_RES_FILE}
+      COMMAND rc.exe /fo ${WINDOWS_RES_FILE} resources.rc
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/win
+    )
+  else()
+    add_custom_command(OUTPUT ${WINDOWS_RES_FILE}
+      COMMAND windres.exe resources.rc ${WINDOWS_RES_FILE}
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/win
+    )
+  endif()
 endif()
 
 add_executable(${CMAKE_PROJECT_NAME} WIN32
   ${UI_HEADERS}
   ${CODE_FILES}
   ${RESOURCE_FILES}
-  ${WINDOWS_RESFILE}
+  ${WINDOWS_RES_FILE}
 )
 target_link_libraries(${CMAKE_PROJECT_NAME}
   Qt5::Widgets
