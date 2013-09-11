@@ -96,9 +96,6 @@ Section Install
   # Qt Plugins
   SetOutPath "$INSTDIR\plugins\platforms"
   File "${QT_PLUGINS_DIR}\platforms\qwindows.dll"
-  #SetOutPath "$INSTDIR\plugins\imageformats"
-  #File "${QT_PLUGINS_DIR}\imageformats\qgif.dll"
-  #File "${QT_PLUGINS_DIR}\imageformats\qjpeg.dll"
 
   # Uninstaller
   WriteRegStr HKLM "${APP_REGISTRY_KEY}" "" $INSTDIR
@@ -147,9 +144,6 @@ Section Uninstall
   # Qt Plugins
   Delete "$INSTDIR\plugins\platforms\qwindows.dll"
   RMDir "$INSTDIR\plugins\platforms"
-  #Delete "$INSTDIR\plugins\imageformats\qgif4.dll"
-  #Delete "$INSTDIR\plugins\imageformats\qjpeg4.dll"
-  #RMDir "$INSTDIR\plugins\imageformats"
   RMDir "$INSTDIR\plugins"
 
   # Menu folder

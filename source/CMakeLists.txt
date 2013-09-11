@@ -48,3 +48,11 @@ add_executable(${CMAKE_PROJECT_NAME} WIN32
 target_link_libraries(${CMAKE_PROJECT_NAME}
   Qt5::Widgets
 )
+
+if (UNIX)
+  install(TARGETS ${CMAKE_PROJECT_NAME}
+          RUNTIME DESTINATION bin)
+elseif (WIN32)
+  install(TARGETS ${CMAKE_PROJECT_NAME}
+          DESTINATION .)
+endif()

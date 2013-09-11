@@ -27,8 +27,7 @@ a nice, solid base on which to get started.
 * An application icon file is added to your project in Windows, and you can
   easily overwrite the default one.
 
-* A working NSIS script is generated in Windows, so that you can quickly get
-  started with an installer.
+* For Windows, there is a choice between NSIS and WiX-based installers.
 
 BUILDING IN LINUX
 =================
@@ -53,41 +52,98 @@ Dependencies
 ### The Qt Libraries
 http://qt-project.org/downloads
 
-Qt bundles a version of MinGW, which we will use for compilation.
+You can use either the MinGW version, or one of the Visual Studio versions.
 
 ### CMake
 http://www.cmake.org/cmake/resources/software.html
 
-### NSIS
+### NSIS or WiX
 http://nsis.sourceforge.net
+http://wixtoolset.org
+
+Targets
+-------
+
+In Windows, there are two additional "targets" defined in CMake configuration:
+* *install*: This target installs the application and the DLLs it depends
+  on into the `dist` directory. This is to simplify testing and packaging the
+  application. The list of files to install is in `win/CMakeLists.txt`.
+* *installer*: This target compiles the WiX installer, but will only be
+  available if WiX was found in the PATH, or the `WIX_PATH` CMake variable is
+  defined.
 
 Building
 --------
 
-### Using QtCreator
+### Using QtCreator (Visual Studio or MinGW)
 
-* Open QtCreator
+* Open QtCreator.
 * File -> Open File or Project
 * Open the top-level CMakeLists.txt file in the project folder.
-* Choose a build location
-* Click "Run CMake"
-* Click "Finish"
+* Choose a build location.
+* Click "Run CMake".
+* Click "Finish".
+* If you want to enable the WiX installer:
+    * On the left bar, click "Projects".
+    * Next to "Edit build configuration", click "Add" -> "Clone Selected".
+    * Name the configuration "installer".
+    * Under "Build Steps", expand Details, and check "install" and "installer".
 * Click the Build button in the bottom-left-hand corner, shaped like a hammer.
 
 ### Using the command-line
 
+#### Visual Studio 2010
+
+* Create a `build` directory in the source directory.
+* Open a VS 2010 Command Prompt, and change into the build directory.
 * Ensure that the following are on the PATH:
-  * Cmake's cmake.exe
-  * Qt's qmake.exe
-  * GCC, from the MinGW bundled with Qt (gcc.exe)
-* Create a `build` directory in the source directory, open a command-line
-  window, and enter the following commands:
+    * CMake's cmake.exe
+    * Qt's qmake.exe
+    * WiX's candle.exe (if you want the WiX installer)
+* Enter the following commands:
 
-    cmake -G "MinGW Makefiles" ..
-    mingw32-make -j <num-jobs>
+> cmake -G "NMake Makefiles" ..
+> nmake install
 
-Where `<num-jobs>` is the number of jobs to run in parallel (usually the number
-of cores plus one).
+* To build the WiX installer, also run:
+
+> nmake installer
+
+#### MinGW
+
+* Create a `build` directory in the source directory.
+* Open a Qt MinGW Command Prompt, and change into the build directory.
+* Ensure that the following are on the PATH:
+    * CMake's cmake.exe
+    * Qt's qmake.exe
+    * WiX's candle.exe (if you want the WiX installer)
+* Enter the following commands:
+
+> cmake -G "MinGW Makefiles" ..
+> mingw32-make install
+
+* To build the WiX installer, also run:
+
+> mingw32-make installer
+
+### WiX Installer
+
+Before the installer will compile successfully, you must generate a fresh UUID
+(e.g. using `uuidgen` in Linux), and place this in the `installer.wxs` file in
+place of the `YOUR-GENERATED-UUID-HERE` placeholder.
+
+Note that the WiX source file by default expects that your project was built
+with Visual Studio 2010, and will attempt to package the Visual Studio 2010
+runtime DLLs.  You'll need to modify it by hand if you use a different version
+of Visual Studio, or MinGW.  This is very straight-forward.
+
+### NSIS Installer
 
 In the build directory, you will find an `installer.nsi` file. This is an NSIS
-script. Right-click, and click "Compile NSIS Script".
+script. Right-click, and click "Compile NSIS Script".  By default, the script
+expects that your project was compiled with MinGW, and will attempt to package
+the MinGW runtime DLLs.  It is straight-forward to change this.
+
+IMPORTANT: Never modify the `installer.nsi` file found in the build directory,
+because it will be overwritten whenever CMake is run.  Always modify the
+`installer.nsi.cmake` file in the `win` directory instead.

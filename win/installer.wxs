@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="Example" Version="1.0.0" Manufacturer="Example Project"
+           UpgradeCode="YOUR-GENERATED-UUID-HERE"
+           Language="1033" Codepage="1252">
+    <Package Id="*" InstallerVersion="200" Compressed="yes" Languages="1033"
+             SummaryCodepage="1252" InstallScope="perMachine"/>
+    <Media Id="1" Cabinet="data.cab" EmbedCab="yes"/>
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."
+                  AllowSameVersionUpgrades="yes"/>
+
+    <Icon Id="appicon.ico" SourceFile="appicon.ico"/>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProductMenuDir" Name="Example">
+          <Component Id="ProductMenuDir" Guid="*">
+            <RegistryValue Root="HKMU" Key="Software\[Manufacturer]\[ProductName]"
+                           Type="string" Name="ProductMenuDirInstalled" Value=""
+                           KeyPath="yes"/>
+            <RemoveFolder Id="ProductMenuDir" On="uninstall"/>
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="Example">
+          <Directory Id="PluginsDir" Name="plugins">
+            <Directory Id="PlatformPluginsDir" Name="platforms"/>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <!-- Main Executable -->
+      <Component Guid="*">
+        <File Name="Example.exe" Source="example.exe" KeyPath="yes">
+          <Shortcut Id="StartMenuShortcut" Directory="ProductMenuDir"
+                    Name="Example" Icon="appicon.ico" Advertise="yes"/>
+        </File>
+      </Component>
+      <!-- Qt Config File -->
+      <Component Guid="*">
+        <File Name="qt.conf" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+    <!-- Runtime DLLs -->
+    <ComponentGroup Id="RuntimeDlls" Directory="INSTALLDIR">
+      <Component Guid="*">
+        <File Name="msvcp100.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
+        <File Name="msvcr100.dll" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+    <!-- Qt DLLs -->
+    <ComponentGroup Id="QtDlls" Directory="INSTALLDIR">
+      <Component Guid="*">
+        <File Name="Qt5Core.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
+        <File Name="Qt5Gui.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
+        <File Name="Qt5Widgets.dll" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+    <!-- ICU DLLs for Qt -->
+    <ComponentGroup Id="IcuDlls" Directory="INSTALLDIR">
+      <Component Guid="*">
+        <File Name="icuuc51.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
+        <File Name="icudt51.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
+        <File Name="icuin51.dll" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+    <!-- Platform Plugins -->
+    <ComponentGroup Id="PlatformPlugins" Directory="PlatformPluginsDir"
+                    Source="plugins\platforms">
+      <Component Guid="*">
+        <File Name="qwindows.dll" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+
+    <!-- This describes what will actually get installed -->
+    <Feature Id="Core">
+      <ComponentRef Id="Example.exe"/>
+      <ComponentRef Id="qt.conf"/>
+      <ComponentGroupRef Id="RuntimeDlls"/>
+      <ComponentGroupRef Id="QtDlls"/>
+      <ComponentGroupRef Id="IcuDlls"/>
+      <ComponentGroupRef Id="PlatformPlugins"/>
+      <ComponentRef Id="ProductMenuDir"/>
+    </Feature>
+
+    <Property Id="ARPPRODUCTICON" Value="appicon.ico"/>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
+    <!-- To offer the option to lanch after installation -->
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1"/>
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch program after installation"/>
+    <Property Id="WixShellExecTarget" Value="[#Example.exe]"/>
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA"
+                  DllEntry="WixShellExec" Impersonate="yes"/>
+    <UI>
+      <UIRef Id="WixUI_InstallDir"/>
+      <UIRef Id="WixUI_ErrorProgressText"/>
+      <!-- To offer the option to lanch after installation -->
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction"
+               Value="LaunchApplication">
+        WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed
+      </Publish>
+    </UI>
+    <!-- Uncomment these lines to modify look of the installer
+    <WixVariable Id="WixUIBannerBmp" Value="installer-header.bmp"/>
+    <WixVariable Id="WixUIDialogBmp" Value="installer-welcome.bmp"/>
+    -->
+    <WixVariable Id="WixUILicenseRtf" Value="..\Licence.rtf"/>
+  </Product>
+</Wix>
