@@ -20,9 +20,10 @@ if (NOT WIX_PATH)
   message(WARNING "Unable to find WiX in the PATH. The WiX installer will be disabled.")
 endif()
 
-# Configure the NSIS installer script
+# Configure the installer scripts
 get_target_property(QT_LIBRARY_DIR Qt5::Core LOCATION)
-configure_file(installer.nsi.cmake ${CMAKE_BINARY_DIR}/installer.nsi @ONLY)
+configure_file(installer.cmake.nsi ${CMAKE_BINARY_DIR}/installer.nsi @ONLY)
+configure_file(installer.cmake.wxs installer.wxs @ONLY)
 
 # C Runtime
 set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP true)
@@ -51,7 +52,7 @@ install(FILES
 # Custom target to build the installer. Should be run after the install target.
 if (WIX_PATH)
   add_custom_target(installer
-    COMMAND ${WIX_PATH}/candle.exe ${CMAKE_CURRENT_SOURCE_DIR}/installer.wxs
+    COMMAND ${WIX_PATH}/candle.exe ${CMAKE_CURRENT_BINARY_DIR}/installer.wxs
     COMMAND ${WIX_PATH}/light.exe -ext WixUIExtension -ext WixUtilExtension
             -b ${CMAKE_INSTALL_PREFIX} -b ${CMAKE_SOURCE_DIR}/win
             -out "${PROJECT_LONGNAME} ${PROJECT_VERSION}.msi"

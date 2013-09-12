@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Example" Version="1.0.0" Manufacturer="Example Project"
-           UpgradeCode="YOUR-GENERATED-UUID-HERE"
+  <Product Id="*" Name="@PROJECT_LONGNAME@" Version="@PROJECT_VERSION@" Manufacturer="@PROJECT_LONGNAME@ Project"
+           UpgradeCode="8a32ed5c-3028-4517-ae78-50315d2ada55"
            Language="1033" Codepage="1252">
     <Package Id="*" InstallerVersion="200" Compressed="yes" Languages="1033"
              SummaryCodepage="1252" InstallScope="perMachine"/>
@@ -13,7 +13,7 @@
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ProductMenuDir" Name="Example">
+        <Directory Id="ProductMenuDir" Name="@PROJECT_LONGNAME@">
           <Component Id="ProductMenuDir" Guid="*">
             <RegistryValue Root="HKMU" Key="Software\[Manufacturer]\[ProductName]"
                            Type="string" Name="ProductMenuDirInstalled" Value=""
@@ -23,7 +23,7 @@
         </Directory>
       </Directory>
       <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLDIR" Name="Example">
+        <Directory Id="INSTALLDIR" Name="@PROJECT_LONGNAME@">
           <Directory Id="PluginsDir" Name="plugins">
             <Directory Id="PlatformPluginsDir" Name="platforms"/>
           </Directory>
@@ -34,9 +34,9 @@
     <DirectoryRef Id="INSTALLDIR">
       <!-- Main Executable -->
       <Component Guid="*">
-        <File Name="Example.exe" Source="example.exe" KeyPath="yes">
+        <File Id="MainExecutable" Name="@PROJECT_LONGNAME@.exe" Source="@CMAKE_PROJECT_NAME@.exe" KeyPath="yes">
           <Shortcut Id="StartMenuShortcut" Directory="ProductMenuDir"
-                    Name="Example" Icon="appicon.ico" Advertise="yes"/>
+                    Name="@PROJECT_LONGNAME@" Icon="appicon.ico" Advertise="yes"/>
         </File>
       </Component>
       <!-- Qt Config File -->
@@ -87,7 +87,7 @@
 
     <!-- This describes what will actually get installed -->
     <Feature Id="Core">
-      <ComponentRef Id="Example.exe"/>
+      <ComponentRef Id="MainExecutable"/>
       <ComponentRef Id="qt.conf"/>
       <ComponentGroupRef Id="RuntimeDlls"/>
       <ComponentGroupRef Id="QtDlls"/>
@@ -101,7 +101,7 @@
     <!-- To offer the option to lanch after installation -->
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1"/>
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch program after installation"/>
-    <Property Id="WixShellExecTarget" Value="[#Example.exe]"/>
+    <Property Id="WixShellExecTarget" Value="[#MainExecutable]"/>
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA"
                   DllEntry="WixShellExec" Impersonate="yes"/>
     <UI>
