@@ -21,15 +21,12 @@
 !define APP_LONGNAME "@PROJECT_LONGNAME@"
 !define APP_VERSION "@PROJECT_VERSION@"
 
+!define DIST_DIR "@CMAKE_INSTALL_PREFIX@"
 !define SOURCE_DIR "@CMAKE_SOURCE_DIR@"
-!define BUILD_DIR "@CMAKE_BINARY_DIR@"
-!define MINGW_BIN_DIR "@CMAKE_CXX_COMPILER@/.."
-!define QT_DLL_DIR "@QT_LIBRARY_DIR@/.."
-!define QT_PLUGINS_DIR "@QT_LIBRARY_DIR@/../../plugins"
 
 Name "${APP_LONGNAME}"
-OutFile "${APP_LONGNAME}-${APP_VERSION} Setup.exe"
-!define ORGANISATION_NAME "Paul Gideon Dann"
+OutFile "${APP_LONGNAME} ${APP_VERSION} Setup.exe"
+!define ORGANISATION_NAME "${APP_LONGNAME} Project"
 InstallDir "$PROGRAMFILES\${APP_LONGNAME}"
 !define APP_REGISTRY_KEY "Software\${APP_LONGNAME}"
 !define UNINSTALL_REGISTRY_KEY "${APP_LONGNAME}"
@@ -75,27 +72,27 @@ Section Install
   File "${SOURCE_DIR}\LICENCE"
 
   # App files
-  File "/oname=${EXE_INSTALL_NAME}" "${BUILD_DIR}\source\${EXE_BUILD_NAME}"
+  File "/oname=${EXE_INSTALL_NAME}" "${DIST_DIR}\${EXE_BUILD_NAME}"
 
   # MinGW Runtimes
-  File "${MINGW_BIN_DIR}\libgcc_s_dw2-1.dll"
-  File "${MINGW_BIN_DIR}\libstdc++-6.dll"
-  File "${MINGW_BIN_DIR}\libwinpthread-1.dll"
+  File "${DIST_DIR}\libgcc_s_dw2-1.dll"
+  File "${DIST_DIR}\libstdc++-6.dll"
+  File "${DIST_DIR}\libwinpthread-1.dll"
 
-  ; ICU Unicode Libraries used by Qt
-  File "${QT_DLL_DIR}\icudt51.dll"
-  File "${QT_DLL_DIR}\icuin51.dll"
-  File "${QT_DLL_DIR}\icuuc51.dll"
+  # ICU Unicode Libraries used by Qt
+  File "${DIST_DIR}\icudt51.dll"
+  File "${DIST_DIR}\icuin51.dll"
+  File "${DIST_DIR}\icuuc51.dll"
 
   # Qt Libraries
-  File "${SOURCE_DIR}\win\qt.conf"
-  File "${QT_DLL_DIR}\Qt5Core.dll"
-  File "${QT_DLL_DIR}\Qt5Gui.dll"
-  File "${QT_DLL_DIR}\Qt5Widgets.dll"
+  File "${DIST_DIR}\qt.conf"
+  File "${DIST_DIR}\Qt5Core.dll"
+  File "${DIST_DIR}\Qt5Gui.dll"
+  File "${DIST_DIR}\Qt5Widgets.dll"
 
   # Qt Plugins
   SetOutPath "$INSTDIR\plugins\platforms"
-  File "${QT_PLUGINS_DIR}\platforms\qwindows.dll"
+  File "${DIST_DIR}\plugins\platforms\qwindows.dll"
 
   # Uninstaller
   WriteRegStr HKLM "${APP_REGISTRY_KEY}" "" $INSTDIR
@@ -130,7 +127,7 @@ Section Uninstall
   Delete "$INSTDIR\libstdc++-6.dll"
   Delete "$INSTDIR\libwinpthread-1.dll"
 
-  ; ICU Unicode Libraries used by Qt
+  # ICU Unicode Libraries used by Qt
   Delete "$INSTDIR\icudt51.dll"
   Delete "$INSTDIR\icuin51.dll"
   Delete "$INSTDIR\icuuc51.dll"

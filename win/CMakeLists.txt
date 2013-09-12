@@ -21,14 +21,25 @@ if (NOT WIX_PATH)
 endif()
 
 # Configure the installer scripts
-get_target_property(QT_LIBRARY_DIR Qt5::Core LOCATION)
 configure_file(installer.cmake.nsi ${CMAKE_BINARY_DIR}/installer.nsi @ONLY)
 configure_file(installer.cmake.wxs installer.wxs @ONLY)
 
-# C Runtime
-set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP true)
-include(InstallRequiredSystemLibraries)
-install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION .)
+# Compiler Runtime DLLs
+if (MSVC)
+  # Visual Studio
+  set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP true)
+  include(InstallRequiredSystemLibraries)
+  install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION .)
+else()
+  # MinGW
+  get_filename_component(MINGW_DLL_DIR ${CMAKE_CXX_COMPILER} PATH)
+  install(FILES
+    ${MINGW_DLL_DIR}/libgcc_s_dw2-1.dll
+    ${MINGW_DLL_DIR}/libstdc++-6.dll
+    ${MINGW_DLL_DIR}/libwinpthread-1.dll
+    DESTINATION .
+  )
+endif()
 
 # Qt Libraries
 get_target_property(QtCore_LOCATION Qt5::Core LOCATION)
