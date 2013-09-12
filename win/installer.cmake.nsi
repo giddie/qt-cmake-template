@@ -41,6 +41,10 @@ Var StartMenuFolder
 
 # Interface Settings
 !define MUI_ABORTWARNING
+#!define MUI_ICON "${SOURCE_DIR}\win\installer-icon.ico"
+#!define MUI_HEADERIMAGE_BITMAP "${SOURCE_DIR}\win\installer-header.bmp" # Size: 150x57
+#!define MUI_WELCOMEFINISHPAGE_BITMAP "${SOURCE_DIR}\win\installer-welcome.bmp" # Size: 164x314
+#!define MUI_UNWELCOMEFINISHPAGE_BITMAP "${SOURCE_DIR}\win\installer-welcome.bmp"
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "${SOURCE_DIR}\LICENCE"
