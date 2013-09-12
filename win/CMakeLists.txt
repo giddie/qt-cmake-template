@@ -60,7 +60,8 @@ install(FILES
   DESTINATION plugins/platforms
 )
 
-# Custom target to build the installer. Should be run after the install target.
+# Custom target to build the WiX installer. Should be run after the install
+# target.
 if (WIX_PATH)
   add_custom_target(installer
     COMMAND ${WIX_PATH}/candle.exe ${CMAKE_CURRENT_BINARY_DIR}/installer.wxs

@@ -1,9 +1,15 @@
 DESCRIPTION
 ==========
 
-This is a simple template that I put together in order to make it easy to
-develop small cross-platform tools written in Qt/C++.  It uses CMake, and forms
-a nice, solid base on which to get started.
+This is a template that I created to simplify the development of cross-platform
+tools written in Qt/C++. It uses CMake, and forms a nice, solid base on which to
+get started with a project, so that you don't need to worry about setting up the
+build system, installers, etc...
+
+I have put a lot of meticulous work into creating this template. This was not
+thrown together quickly; it is carefully thought through in every aspect, in
+keeping with my often-somewhat-pedantic nature. The licence for the template
+itself is ISC. Essentially, do what you like with it. I hope you find it useful.
 
 * A basic example application is included.
 
@@ -27,7 +33,13 @@ a nice, solid base on which to get started.
 * An application icon file is added to your project in Windows, and you can
   easily overwrite the default one.
 
-* For Windows, there is a choice between NSIS and WiX-based installers.
+* For Windows, supports both WinGW and Visual Studio compilers.
+
+* For Windows, there is a choice between NSIS and WiX-based installers.  Both
+  are automatically configured with your choice of project name from the
+  top-level CMakeLists file.  When you have chosen which you will use, it is
+  straight-forward to remove everything relating to the other one: just edit
+  `win/CMakeLists.txt`.
 
 BUILDING IN LINUX
 =================
@@ -102,12 +114,16 @@ Building
     * WiX's candle.exe (if you want the WiX installer)
 * Enter the following commands:
 
-> cmake -G "NMake Makefiles" ..
-> nmake install
+```
+cmake -G "NMake Makefiles" ..
+nmake install
+```
 
 * To build the WiX installer, also run:
 
-> nmake installer
+```
+nmake installer
+```
 
 #### MinGW
 
@@ -119,25 +135,48 @@ Building
     * WiX's candle.exe (if you want the WiX installer)
 * Enter the following commands:
 
-> cmake -G "MinGW Makefiles" ..
-> mingw32-make install
+```
+cmake -G "MinGW Makefiles" ..
+mingw32-make install
+```
 
 * To build the WiX installer, also run:
 
-> mingw32-make installer
+```
+mingw32-make installer
+```
 
 ### WiX Installer
 
+The WiX Installer is more advanced, and better integrated into Windows. It is
+also more complex, and gaining a thorough understanding of how it works requires
+time and patience. It may be worth your while reading up on WiX and the Windows
+Installer framework in order to reach a deeper understanding. However, I've done
+the hard work for you, and unless you have very complex requirements, you should
+be able to simply modify this script without any ill effects.
+
 Before the installer will compile successfully, you must generate a fresh UUID
-(e.g. using `uuidgen` in Linux), and place this in the `installer.wxs` file in
-place of the `YOUR-GENERATED-UUID-HERE` placeholder.
+(e.g. using `uuidgen` in Linux), and place this in the `win/installer.cmake.wxs`
+file in place of the `YOUR-GENERATED-UUID-HERE` placeholder.
 
 Note that the WiX source file by default expects that your project was built
 with Visual Studio 2010, and will attempt to package the Visual Studio 2010
 runtime DLLs.  You'll need to modify it by hand if you use a different version
 of Visual Studio, or MinGW.  This is very straight-forward.
 
+IMPORTANT: The `installer.cmake.wxs` file is processed by CMake before it is
+passed to WiX, and the processed file is placed in the build directory. If
+you wish to make any modifications to the installer, make sure that you edit
+`installer.cmake.wxs` in the source directory, and not `installer.wxs` in the
+build directory, which will be overwritten!
+
 ### NSIS Installer
+
+The NSIS installer is quite simple, and it's relatively easy to understand
+exactly what it's doing. However, you need to take greater care in ensuring
+that whatever is installed is also correctly uninstalled. Also, MSI installers
+(such as WiX) are increasingly becoming the norm, especially in corporate
+environments, because of their thorough integration with Windows.
 
 In the build directory, you will find an `installer.nsi` file. This is an NSIS
 script. Right-click, and click "Compile NSIS Script".  By default, the script
