@@ -6,9 +6,7 @@ tools written in Qt/C++. It uses CMake, and forms a nice, solid base on which to
 get started with a project, so that you don't need to worry about setting up the
 build system, installers, etc...
 
-I have put a lot of meticulous work into creating this template. This was not
-thrown together quickly; it is carefully thought through in every aspect, in
-keeping with my often-somewhat-pedantic nature. The licence for the template
+Suggestions for improvement are very welcome. The licence for the template
 itself is ISC. Essentially, do what you like with it. I hope you find it useful.
 
 * A basic example application is included.
