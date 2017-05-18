@@ -45,9 +45,9 @@ endif()
 get_target_property(QtCore_LOCATION Qt5::Core LOCATION)
 get_filename_component(QT_DLL_DIR ${QtCore_LOCATION} PATH)
 install(FILES
-  ${QT_DLL_DIR}/icudt51.dll
-  ${QT_DLL_DIR}/icuin51.dll
-  ${QT_DLL_DIR}/icuuc51.dll
+  ${QT_DLL_DIR}/icudt54.dll
+  ${QT_DLL_DIR}/icuin54.dll
+  ${QT_DLL_DIR}/icuuc54.dll
   ${QT_DLL_DIR}/Qt5Core.dll
   ${QT_DLL_DIR}/Qt5Gui.dll
   ${QT_DLL_DIR}/Qt5Widgets.dll

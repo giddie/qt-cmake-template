@@ -37,9 +37,10 @@ set(PROJECT_VERSION "1.0.0")
 # Global CMake options
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
 
 # Configure Qt
-find_package(Qt5Widgets REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 find_package(Qt5Test REQUIRED)
 
 if (NOT MSVC)

@@ -17,10 +17,8 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/defines.h.cmake
                ${CMAKE_CURRENT_BINARY_DIR}/defines.h)
 
-file(GLOB_RECURSE UI_FILES *.ui)
 file(GLOB_RECURSE CODE_FILES *.cpp)
 
-qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 qt5_add_resources(RESOURCE_FILES ../resources/resources.qrc)
 
 # Windows application icon
@@ -40,7 +38,7 @@ if (WIN32)
 endif()
 
 add_executable(${CMAKE_PROJECT_NAME} WIN32
-  ${UI_HEADERS}
+#  ${UI_HEADERS}
   ${CODE_FILES}
   ${RESOURCE_FILES}
   ${WINDOWS_RES_FILE}
